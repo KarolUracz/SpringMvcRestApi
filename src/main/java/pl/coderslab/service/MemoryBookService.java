@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+//@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class MemoryBookService {
     private List<Book> list;
 
@@ -34,14 +34,21 @@ public class MemoryBookService {
         return getList().stream().filter(book -> book.getId() == id).findFirst().orElse(null);
     }
 
-    public List<Book> updateBook(Book book){
+    public void updateBook(Book book){
         Book bookById = getBookById(book.getId());
         list.remove(bookById);
         list.add(book);
-        return list;
     }
 
-    public void addBook(Book book){
+    public Book addBook(Book book){
+        book.setId(Book.count);
         list.add(book);
+        return book;
+    }
+
+    public List<Book> removeBook(long bookId){
+        Book bookById = getBookById(bookId);
+        list.remove(bookById);
+        return list;
     }
 }
