@@ -3,6 +3,7 @@ package pl.coderslab.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.interfaces.BookService;
 import pl.coderslab.model.Book;
 import pl.coderslab.service.MemoryBookService;
 
@@ -12,11 +13,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/books")
 public class BookController {
-    private MemoryBookService memoryBookService;
+    private BookService bookService;
 
     @Autowired
-    public BookController(MemoryBookService memoryBookService) {
-        this.memoryBookService = memoryBookService;
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
     }
 
     @GetMapping("/hello")
@@ -32,23 +33,23 @@ public class BookController {
 
     @GetMapping("")
     public List<Book> getBookList() {
-        return memoryBookService.getList();
+        return bookService.getList();
     }
 
     @PostMapping("")
     public Book getBookById(@RequestBody Book book) {
-        memoryBookService.addBook(book);
+        bookService.addBook(book);
         return book;
     }
 
     @PutMapping("{id}")
     public void updateBook(@RequestBody Book book, @PathVariable long id) {
         book.setId(id);
-        memoryBookService.updateBook(book);
+        bookService.updateBook(book);
     }
 
     @DeleteMapping("{id}")
     public void deleteBook(@PathVariable long id) {
-        memoryBookService.removeBook(id);
+        bookService.removeBook(id);
     }
 }
