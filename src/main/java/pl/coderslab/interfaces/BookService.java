@@ -8,7 +8,7 @@ public interface BookService {
     public List<Book> getList();
     public void setList(List<Book> list);
     public Book getBookById(long id);
-    public void updateBook(Book book);
+    public Book updateBook(Book book, long id);
     public Book addBook(Book book);
-    public List<Book> removeBook(long bookId);
+    public void removeBook(long bookId);
 }

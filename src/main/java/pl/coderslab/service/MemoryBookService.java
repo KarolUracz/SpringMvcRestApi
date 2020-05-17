@@ -35,10 +35,11 @@ public class MemoryBookService implements BookService {
         return getList().stream().filter(book -> book.getId() == id).findFirst().orElse(null);
     }
 
-    public void updateBook(Book book){
+    public Book updateBook(Book book, long id){
         Book bookById = getBookById(book.getId());
         list.remove(bookById);
         list.add(book);
+        return book;
     }
 
     public Book addBook(Book book){
@@ -47,9 +48,8 @@ public class MemoryBookService implements BookService {
         return book;
     }
 
-    public List<Book> removeBook(long bookId){
+    public void removeBook(long bookId){
         Book bookById = getBookById(bookId);
         list.remove(bookById);
-        return list;
     }
 }
