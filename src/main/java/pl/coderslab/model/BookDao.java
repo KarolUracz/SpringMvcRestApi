@@ -1,5 +1,6 @@
 package pl.coderslab.model;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RestController;
 import pl.coderslab.interfaces.BookService;
 import pl.coderslab.service.DbUtil;
@@ -8,6 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class BookDao implements BookService {
 
     private static final String LOAD_ALL_QUERY = "SELECT * FROM book";
@@ -18,7 +20,7 @@ public class BookDao implements BookService {
 
     @Override
     public List<Book> getList() {
-        try (Connection connection = DbUtil.getConnection()) {
+        try (Connection connection = DbUtil.connect()) {
             List<Book> books = new ArrayList<>();
             PreparedStatement preparedStatement = connection.prepareStatement(LOAD_ALL_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -46,7 +48,7 @@ public class BookDao implements BookService {
 
     @Override
     public Book getBookById(long id) {
-        try (Connection connection = DbUtil.getConnection()) {
+        try (Connection connection = DbUtil.connect()) {
             PreparedStatement preparedStatement = connection.prepareStatement(LOAD_BY_ID_QUERY);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -68,7 +70,7 @@ public class BookDao implements BookService {
 
     @Override
     public Book updateBook(Book book, long id) {
-        try (Connection connection = DbUtil.getConnection()) {
+        try (Connection connection = DbUtil.connect()) {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BY_ID_QUERY);
             preparedStatement.setString(1, book.getIsbn());
             preparedStatement.setString(2, book.getTitle());
@@ -85,7 +87,7 @@ public class BookDao implements BookService {
 
     @Override
     public Book addBook(Book book) {
-        try (Connection connection = DbUtil.getConnection()) {
+        try (Connection connection = DbUtil.connect()) {
             PreparedStatement statement = connection.prepareStatement(ADD_QUERY, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, book.getIsbn());
             statement.setString(2, book.getTitle());
@@ -106,7 +108,7 @@ public class BookDao implements BookService {
 
     @Override
     public void removeBook(long bookId) {
-        try(Connection connection = DbUtil.getConnection()) {
+        try(Connection connection = DbUtil.connect()) {
             PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID_QUERY);
             statement.setLong(1, bookId);
             statement.executeUpdate();
